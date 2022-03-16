@@ -22,9 +22,8 @@ export class AccountService {
         const user = response;
         if (user) {
           console.log("step 7 setting data to local storage");
-          localStorage.setItem('user', JSON.stringify(user));
           console.log("step 8 setting data to buffer object from local storage");
-          this.currentUserSource.next(user);
+          this.setCurrentUser(user);
         }
       })
     );
@@ -34,8 +33,7 @@ export class AccountService {
     return this.http.post(this.baseUrl + 'account/register', model).pipe(
       map((user: User) => {
         if (user) {
-          localStorage.setItem('user', JSON.stringify(user));
-          this.currentUserSource.next(user);
+          this.setCurrentUser(user);
         }
       })
     );
@@ -43,6 +41,7 @@ export class AccountService {
 
   setCurrentUser(user: User) {
     console.log("step 3 set current user to buffer object " + JSON.stringify(user));
+    localStorage.setItem('user', JSON.stringify(user));
     this.currentUserSource.next(user);
   }
 
